@@ -1,12 +1,18 @@
 import { createGatewayProvider } from '@ai-sdk/gateway'
 import { Models } from './constants'
 import type { JSONValue } from 'ai'
-import type { OpenAIResponsesProviderOptions } from '@ai-sdk/openai'
 import type { LanguageModelV3 } from '@ai-sdk/provider'
 
 const gateway = createGatewayProvider({
   baseURL: process.env.AI_GATEWAY_BASE_URL,
 })
+
+interface OpenAIProviderOptions {
+  include?: string[]
+  reasoningEffort?: 'low' | 'medium' | 'high'
+  reasoningSummary?: 'auto' | string
+  serviceTier?: 'priority' | 'default'
+}
 
 export interface ModelOptions {
   model: LanguageModelV3
@@ -27,7 +33,7 @@ export function getModelOptions(
           reasoningEffort: options?.reasoningEffort ?? 'low',
           reasoningSummary: 'auto',
           serviceTier: 'priority',
-        } satisfies OpenAIResponsesProviderOptions,
+        } satisfies OpenAIProviderOptions,
       },
     }
   }
